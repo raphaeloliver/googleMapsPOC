@@ -35,7 +35,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+            verifyLocation();
+
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
@@ -44,13 +45,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // sees the explanation, try again to request the permission.
 
             } else {
-
                 // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_FINE_LOCATION);
             }
+        } else {
+
+            verifyLocation();
         }
     }
 
@@ -76,14 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    new LocationGPS(this, new CallBack() {
-                        @Override
-                        public void coordenadas(Double[] resultado) {
-                            LAT = resultado[0];
-                            LONG = resultado[1];
-                            mapFragment.getMapAsync(MapsActivity.this);
-                        }
-                    });
+                    verifyLocation();
 
                 } else {
                     // permission denied
@@ -91,8 +86,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 return;
             }
-
             // other 'case' statements for other permssions
         }
+    }
+
+    public void verifyLocation() {
+        new LocationGPS(this, new CallBack() {
+            @Override
+            public void coordenadas(Double[] resultado) {
+                LAT = resultado[0];
+                LONG = resultado[1];
+                mapFragment.getMapAsync(MapsActivity.this);
+            }
+        });
     }
 }
