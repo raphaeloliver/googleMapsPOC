@@ -7,10 +7,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -59,10 +61,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
 
-
         LatLngBounds zoom = new LatLngBounds(new LatLng(LAT, LONG), new LatLng(LAT, LONG));
 
         LatLng position = new LatLng(LAT, LONG);
+
+        mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         //Adiciona o marcador
         mMap.addMarker(new MarkerOptions().position(position));
         //Move a camera ate a posição
@@ -82,6 +87,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Marker de uma posição fixa
         LatLng sydney = new LatLng(-23.4742357, -46.6638387);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Rua do canavial, 209 - Vila nova Cachoeirinha"));
+
+
 
     }
 
