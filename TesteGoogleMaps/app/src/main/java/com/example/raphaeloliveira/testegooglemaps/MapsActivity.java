@@ -2,11 +2,11 @@ package com.example.raphaeloliveira.testegooglemaps;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,9 +37,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             verifyLocation();
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
@@ -59,6 +57,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+
+
         LatLngBounds zoom = new LatLngBounds(new LatLng(LAT, LONG), new LatLng(LAT, LONG));
 
         LatLng position = new LatLng(LAT, LONG);
@@ -68,6 +69,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
         //zoom na posição
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zoom.getCenter(), 17));
+        //Inclui o trafico de rua
+        mMap.setTrafficEnabled(true);
         //botão para incluir posição central da coordenada
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
@@ -76,10 +79,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
+        //Marker de uma posição fixa
+        LatLng sydney = new LatLng(-23.4742357, -46.6638387);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Rua do canavial, 209 - Vila nova Cachoeirinha"));
+
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -92,7 +99,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // permission denied
                     // Disable the functionality that depends on this permission.
                 }
-                return;
             }
             // other 'case' statements for other permssions
         }
