@@ -28,12 +28,12 @@ public class LocationGPS implements LocationListener {
         if (ActivityCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
-        android.location.Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        android.location.Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 30 * 1000) {
 
             // caso faz 2 minutos que pegou o local, pega o último local...
